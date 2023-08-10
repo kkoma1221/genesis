@@ -394,7 +394,7 @@
             const slideH3 = $('#section2 .slide-view .slide h3');
             const slideH4 = $('#section2 .slide-view .slide h4');
             let slideWidth = (section2Container.innerWidth()-198+20+20)/3; // 슬라이드 1개의 너비, 마진이 내부에 포함된 상태. 488.333
-            let n = slide.length; //슬라이드전체 길이(슬라이드의 갯수)
+            let n = slide.length; //슬라이드전체 길이(슬라이드의 갯수), 10개
 
             //1-2. 컨테이너 너비 구하기
             // console.log( $('#section2').innerWidth()); // section2 전체 컨테이너 너비 1903이 나와야해
@@ -416,8 +416,8 @@
                         for(let i=0; i<n; i++){ //반복문 for 
                             pageBtn.eq(i).css({display: 'block'}); // 8개만 보임 0~8
                         }
-                        if(cnt>=7){
-                            cnt=7
+                        if(cnt>=n-1){ //7
+                            cnt=n-1;
                         }
                         // pageBtn.eq(8).css({display: 'none'});
                         // pageBtn.eq(9).css({display: 'none'}); // 슬라이드 페이지 버튼 갯수 변화 8개에서 1280px에서 10개로
@@ -428,12 +428,15 @@
                         pageBtn.css({display: 'block'}); // 10개 모두 보임
                         // pageBtn.eq(8).css({display: 'block'});
                         // pageBtn.eq(9).css({display: 'block'});
-
                     }
-
                 }
                 else{ // 1642px 초과하면 패딩값 그대로 있음  
                     slideWidth = (section2Container.innerWidth()-198+20+20)/3;
+                    n = slide.length-2;
+                    pageBtn.css({display: 'none'}); // 10개 모두 숨김
+                    for(let i=0; i<n; i++){ //반복문 for 
+                        pageBtn.eq(i).css({display: 'block'}); // 8개만 보임 0~8
+                    }
                 }
                 winW = $(window).innerWidth(); // 창크기 바뀔 때 마다 창 너비를 계속 확인 시켜줌.
                 slideWrap.css({width: slideWidth*10}); //슬라이드 전체박스
