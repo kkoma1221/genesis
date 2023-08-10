@@ -53,6 +53,9 @@
 
 
             //0. 메인 슬라이드 터치스와이프 touchSwap
+            //데스크탑 : 마우스 터치 스와이프 이벤트
+            //데스크탑 : 드래그 앤 드롭 이벤트
+            
             // mouse down => 터치 시작
             // mouse up => 터치 끝
             //화면의 왼쪽 끝이 0 ~ 오른쪽 끝이 1920
@@ -61,7 +64,7 @@
             let dragStart = null; // 드래그 변수
             let dragEnd = null;
             let mDown = false; // 마우스 다운(드래그 시작 알림)
-            let sizeX = winW /2; //드래그 길이
+            let sizeX = winW /4; //드래그 길이
 
             //슬라이드박스 좌측 끝 좌표값
             //console.log(slideWrap.offset().left);
@@ -115,6 +118,7 @@
             });
 
             //slideContainer 영역을 벗어나면 mouseup의 예외처리 (디버깅)
+            //데스크 탑에서만 사용 document 예외처리
             $(document).on({
                 mouseup(e){
                     if(!mDown) {return;}   
@@ -136,6 +140,75 @@
                 }
             });
 
+            //8/10
+            //태블릿 & 모바일 : 손가락(fingering) 터치 스와이프 이벤트 
+            //태블릿 & 모바일 : 손가락(fingering) 드래그 앤 드롭 이벤트
+            // 태블릿과 모바일에서만 이벤트 동작 => 반응형으로 바꿔주기(개발자모드)
+            //originalEvent: TouchEvent, type: 'touchstart'
+            
+            slideContainer.on({
+                touchstart(e){
+                    winW = $(window).innerWidth(); //마우스 다운 하면 창너비 다시 가져옴
+                    sizeX = winW /4;
+                    mouseDown = e.originalEvent.changedTouches[0].clientX;
+                    //슬라이드랩퍼박스 좌측 좌표값
+                    //계속 드래그 시 슬라이드 박스 좌측값 설정한다.
+                    dragStart = e.originalEvent.changedTouches[0].clientX - (slideWrap.offset().left+winW);
+                    mDown = true; //드래그 시작
+                    slideView.css({cursor:'grabbing'}); // 주먹모양 커서
+                },
+                touchend(e){
+                    mouseUp = e.originalEvent.changedTouches[0].clientX;
+                    if(mouseDown-mouseUp > sizeX){
+                        clearInterval(setId);
+                        if(!slideWrap.is(':animated')){
+                            nextCount();
+                        }
+                    }
+                    if(mouseDown-mouseUp < -sizeX){
+                        clearInterval(setId);
+                        if(!slideWrap.is(':animated')){
+                            prevCount();
+                        }
+                    }
+                    //-900>= 이상이고 <= 900 이하
+                    if( mouseDown-mouseUp>=-sizeX && mouseDown-mouseUp<=sizeX){
+                        mainSlide();
+                    }
+                    mDown=false; // 드래그 끝
+                    slideView.css({cursor:'grab'}) // 손바닥 모양 커서
+                },
+                touchmove(e){ //드래그
+                    //마우스 다운이 없는 상태에서는 슬라이드가 따라다니지 못하게 한다.
+                    //단, 마우스 업(Up)이되면 해제된다. false
+                    if(mDown!==true){
+                        return; // 리턴, 프로그램에서 탈출(마우스무브에서 탈출)
+                    }
+                    //드래그 시작
+                    //드래그 끝
+                    //이동거리(Mouse Move 거리)=드래그끝.좌표값 - 드래그시작.좌표값
+                    dragEnd = e.originalEvent.changedTouches[0].clientX;
+                    //console.log(dragEnd-dragStart);
+                    //메인슬라이드 이동(드래그)
+                    slideWrap.css({left:dragEnd-dragStart});
+                }
+            });
+
+            // 손가락 이벤트 확인하기 테스트하기.
+            // slideContainer.on({
+            //     touchstart(event){ // event 라고 쓰면 중괄호 안에도 event/ e만 쓰면 중괄호 안에도 e
+            //         console.log(event); // 손가락 터치 이벤트 확인하기
+            //         console.log(event.originalEvent.changedTouches[0].clientX);
+            //     },
+            //     touchend(e){
+            //         console.log(e);
+            //         console.log(e.originalEvent.changedTouches[0].clientX);
+            //     },
+            //     touchmove(e){
+            //         //console.log(e);
+            //         console.log(e.originalEvent.changedTouches[0].clientX);
+            //     }
+            // });
 
             // 1. 메인슬라이드함수
             function mainSlide(){
@@ -223,10 +296,11 @@
              let dragEnd = null;
              let winW = $(window).innerWidth();
              let mDown = false; 
-             let sizeX = 400;
+             let sizeX = 100;
              let offsetLeft = slideWrap.offset().left; 
 
             // 터치스와이프
+            //데스크탑 touchswap & drag and drop
             slideContainer.on({
                 mousedown(e){
                     touchStart = e.clientX;
@@ -281,6 +355,40 @@
                     mainSlide();
                 }
                 slideView.css({cursor:'grab'});    
+                }
+            });
+
+            //태블릿, 모바일 touchswap & drag and drop
+
+            slideContainer.on({
+                touchstart(e){
+                    touchStart = e.originalEvent.changedTouches[0].clientX;
+                    dragStart = e.originalEvent.changedTouches[0].clientX-(slideWrap.offset().left-offsetLeft);
+                    mDown = true;
+                    slideView.css({cursor:'grabbing'});
+                },
+                touchend(e){
+                    touchEnd = e.originalEvent.changedTouches[0].clientX;
+                    //console.log(slideWrap.offset().left)
+                    //console.log(e.offsetX - slideWrap.offset().left)
+                if(touchStart-touchEnd > sizeX){
+                    nextCount();
+                    if(cnt>7) {cnt=7};
+                }
+                if(touchStart-touchEnd < -sizeX){
+                    prevCount();
+                    if(cnt<0) {cnt=0};
+                }
+                mDown = false;
+                if(touchStart-touchEnd>=-sizeX && touchStart-touchEnd<=sizeX){
+                    mainSlide();
+                }
+                slideView.css({cursor:'grab'});
+                },
+                touchmove(e){
+                    if(mDown!==true){return;}
+                    dragEnd = e.originalEvent.changedTouches[0].clientX;
+                    slideWrap.css({left:dragEnd-dragStart});
                 }
             });
 

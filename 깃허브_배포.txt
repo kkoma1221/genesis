@@ -1,0 +1,79 @@
+Repository
+ genesis
+
+origin 오리진(Repository 웹주소 URL)
+https://github.com/kkoma1221/genesis.git
+
+
+명령어 우분투(윈도우에서 리눅스 명령어를 쉽게 쓸 수 있게 해주는 프로그램)
+git bash
+
+git-scm.com에서 다운로드
+
+Github (버젼관리==형상관리, 협업)
+1. 깃 설정
+ git  init
+
+2. 목록보기. 숨겨진 목록까지 보여주기
+ ls  -la
+
+3. 환경설정
+ 웹브라우저 로그인 상태에서
+ git  config  user.name "kkoma1221"
+ git  config  user.email "kkoma1221@gmail.com"
+ 검사
+ git  config  user.name
+ git  config  user.name
+
+4. 원격으로 origin 등록(추가)
+http://
+https:// ssl 웹보안인증서
+
+http://github.com/kkoma1221/genesis.git - Frontend
+CORS 오류
+프록시 서버 설치,
+또는 origin header coding 해서 사용가능하도록 
+http://kkoma1221.co.kr/member.php - Backend
+http://kkoma1221.co.kr/member.jsp - Backend
+
+추가
+git  remote  add  origin  http://github.com/kkoma1221/genesis.git
+
+삭제 (origin 주소가 잘못 기록된 경우)
+git  remote  remove  origin
+
+다시 추가
+git  remote  add  origin  http://github.com/kkoma1221/genesis.git
+
+확인(등록) git remote -v (verify 약자)
+origin http://github.com/kkoma1221/genesis.git (fetch) 올려주는 주소
+origin http://github.com/kkoma1221/genesis.git (push)  데이터 내보내는 주소
+
+clear (화면 청소), 화면 지우기
+
+등록된 것 모두 보기(리스트)
+git  config  --list
+
+5. Add 배포 준비하기 (staging)
+ git add .
+
+6. Commit 최종점검
+ git  commit  -m '제네시스 메인슬라이드'
+
+7. Push 배포하기
+ git push origin master (master branches :기본)
+
+8. Authentication 인증이 되어야 push가 완료된다.
+window > 설정메뉴 > 자격 증명 검색 > window 자격 증명 관리를 확인한다. 
+github에 웹주소가 있고, 본인의 user.name, user.password가 저장되어 관리된다.
+한 컴퓨터에서 여러 사용자가 사용 시 추가 등록해서 사용 가능하다.
+
+
+9. Github에서 새로고침 올라온 파일 확인.
+ push한 모든 데이터 확인
+
+10. settings 클릭
+11. 좌측 category menu 중 Pages 클릭.
+12. GitHub Pages -> 중간에 Branch -> master 선택 -> Save 클릭 -> 1분~3분 대기 -> 새로고침
+13. 상단에 배포 주소가 나타난다. Visit Site 클릭. 배포된 homepage browser에 나타난다.
+ https://kkoma1221.github.io/genesis/
