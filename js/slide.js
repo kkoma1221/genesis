@@ -416,6 +416,9 @@
                         for(let i=0; i<n; i++){ //반복문 for 
                             pageBtn.eq(i).css({display: 'block'}); // 8개만 보임 0~8
                         }
+                        if(cnt>=7){
+                            cnt=7
+                        }
                         // pageBtn.eq(8).css({display: 'none'});
                         // pageBtn.eq(9).css({display: 'none'}); // 슬라이드 페이지 버튼 갯수 변화 8개에서 1280px에서 10개로
                     }
@@ -423,7 +426,6 @@
                         slideWidth = (section2Container.innerWidth()-0+20+20)/1;
                         n = slide.length;
                         pageBtn.css({display: 'block'}); // 10개 모두 보임
-
                         // pageBtn.eq(8).css({display: 'block'});
                         // pageBtn.eq(9).css({display: 'block'});
 
