@@ -54,10 +54,10 @@ clear (화면 청소), 화면 지우기
 등록된 것 모두 보기(리스트)
 git  config  --list
 
-5. Add 배포 준비하기 (staging)
+5. Add 배포 준비하기 (staging) (수정된 내용만 추가됨)
  git add .
 
-6. Commit 최종점검
+6. Commit 최종점검 (수정내용 점검)
  git  commit  -m '제네시스 메인슬라이드'
 
 7. Push 배포하기

@@ -314,11 +314,9 @@
                     //console.log(e.offsetX - slideWrap.offset().left)
                 if(touchStart-touchEnd > sizeX){
                     nextCount();
-                    if(cnt>7) {cnt=7};
                 }
                 if(touchStart-touchEnd < -sizeX){
                     prevCount();
-                    if(cnt<0) {cnt=0};
                 }
                 mDown = false;
                 if(touchStart-touchEnd>=-sizeX && touchStart-touchEnd<=sizeX){
@@ -344,11 +342,9 @@
                     //console.log(e.offsetX - slideWrap.offset().left)
                 if(touchStart-touchEnd > sizeX){
                     nextCount();
-                    if(cnt>7) {cnt=7};
                 }
                 if(touchStart-touchEnd < -sizeX){
                     prevCount();
-                    if(cnt<0) {cnt=0};
                 }
                 mDown = false;
                 if(touchStart-touchEnd>=-sizeX && touchStart-touchEnd<=sizeX){
@@ -373,11 +369,9 @@
                     //console.log(e.offsetX - slideWrap.offset().left)
                 if(touchStart-touchEnd > sizeX){
                     nextCount();
-                    if(cnt>7) {cnt=7};
                 }
                 if(touchStart-touchEnd < -sizeX){
                     prevCount();
-                    if(cnt<0) {cnt=0};
                 }
                 mDown = false;
                 if(touchStart-touchEnd>=-sizeX && touchStart-touchEnd<=sizeX){
@@ -400,11 +394,13 @@
             const slideH3 = $('#section2 .slide-view .slide h3');
             const slideH4 = $('#section2 .slide-view .slide h4');
             let slideWidth = (section2Container.innerWidth()-198+20+20)/3; // 슬라이드 1개의 너비, 마진이 내부에 포함된 상태. 488.333
+            let n = slide.length; //슬라이드전체 길이(슬라이드의 갯수)
 
             //1-2. 컨테이너 너비 구하기
             // console.log( $('#section2').innerWidth()); // section2 전체 컨테이너 너비 1903이 나와야해
             // console.log( (section2Container.innerWidth()-198+20+20)/3);
             // function = 여러 개의 명령을 하나로 묶는 것 
+
             
             resizeFn(); //로딩 시 실행
 
@@ -415,10 +411,24 @@
                     //1280px 이하에서는 슬라이드 1개만 노출
                     if(winW > 1280) {
                         slideWidth = (section2Container.innerWidth()-0+20+20)/3;
+                        n = slide.length-2; // 8개
+                        pageBtn.css({display: 'none'}); // 10개 모두 숨김
+                        for(let i=0; i<n; i++){ //반복문 for 
+                            pageBtn.eq(i).css({display: 'block'}); // 8개만 보임 0~8
+                        }
+                        // pageBtn.eq(8).css({display: 'none'});
+                        // pageBtn.eq(9).css({display: 'none'}); // 슬라이드 페이지 버튼 갯수 변화 8개에서 1280px에서 10개로
                     }
                     else {
                         slideWidth = (section2Container.innerWidth()-0+20+20)/1;
+                        n = slide.length;
+                        pageBtn.css({display: 'block'}); // 10개 모두 보임
+
+                        // pageBtn.eq(8).css({display: 'block'});
+                        // pageBtn.eq(9).css({display: 'block'});
+
                     }
+
                 }
                 else{ // 1642px 초과하면 패딩값 그대로 있음  
                     slideWidth = (section2Container.innerWidth()-198+20+20)/3;
@@ -428,7 +438,8 @@
                 slide.css({width: slideWidth, height: slideWidth*heightRate}); //슬라이드 1개
                 slideH3.css({fontSize: slideWidth*0.066914548}); //폰트크기 비율로 바꿈.
                 slideH4.css({fontSize: slideWidth*0.035687759});
-                mainSlide(); // 슬라이드 너비 전달하기 위해 호출
+                //mainSlide(); // 슬라이드 너비 전달하기 위해 호출
+                slideWrap.stop().animate({left:-slideWidth * cnt}, 0);
             }
             
             // 가로 세로 크기가 1픽셀 이라도 변경되면 구동(실행)이 된다.
@@ -463,11 +474,13 @@
             //다음카운트 함수
             function nextCount(){
                 cnt++;
+                if(cnt>n-1){cnt=n-1};
                 mainSlide();
             }
             //이전카운트 함수
             function prevCount(){
                 cnt--;
+                if(cnt<0){cnt=0};
                 mainSlide();
             }
             //2. 페이지버튼 클릭이벤트
